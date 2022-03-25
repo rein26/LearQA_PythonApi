@@ -1,6 +1,7 @@
 from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
+import allure
 
 class TestUserEdit(BaseCase):
     def setup(self):
@@ -17,6 +18,8 @@ class TestUserEdit(BaseCase):
         self.user_id = self.get_json_value(response, "id")
         self.new_name = "Changed Name"
 
+    @allure.testcase("https://google.com", 'test_case edit just created')
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_edit_just_created(self):
         #LOGIN
         login_data = {
@@ -52,6 +55,8 @@ class TestUserEdit(BaseCase):
             "Wrong name of the user after edit"
         )
 
+    @allure.testcase("https://google.com", 'test_case edit without auth')
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_edit_without_auth(self):
         response2 = MyRequests.put(
             f"/user/{self.user_id}",
@@ -65,6 +70,8 @@ class TestUserEdit(BaseCase):
         )
 
 
+    @allure.testcase("https://google.com", 'test_case edit with another auth')
+    @allure.severity(allure.severity_level.MINOR)
     def test_edit_with_another_auth(self):
         # LOGIN
         login_data = {
@@ -86,6 +93,8 @@ class TestUserEdit(BaseCase):
 
         Assertions.assert_code_status(response2, 400)
 
+    @allure.testcase("https://google.com", 'test_case edit invalid email')
+    @allure.severity(allure.severity_level.NORMAL)
     def test_edit_invalid_email(self):
         # LOGIN
         login_data = {
@@ -112,6 +121,8 @@ class TestUserEdit(BaseCase):
             "Invalid email format"
         )
 
+    @allure.testcase("https://google.com", 'test_case edit short name')
+    @allure.severity(allure.severity_level.NORMAL)
     def test_edit_short_name(self):
         # LOGIN
         login_data = {
